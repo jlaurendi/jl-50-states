@@ -1,5 +1,5 @@
 import { ANIM } from './constants.js';
-import { timeToSeconds } from './sheets.js';
+import { timeToSeconds, OVERALL_PR, RACING_SINCE_YEAR } from './sheets.js';
 
 /**
  * Compute stats from the marathon data map.
@@ -7,26 +7,13 @@ import { timeToSeconds } from './sheets.js';
 export function computeStats(dataMap) {
   let completedCount = 0;
   let plannedCount = 0;
-  let prTime = '';
-  let prRace = '';
-  let prSeconds = Infinity;
   let mostRecentDate = null;
   let mostRecentRace = '';
-  let earliestDate = null;
 
   for (const [abbrev, data] of dataMap) {
     if (data.status === 'completed') {
       completedCount++;
 
-      // Find PR (fastest marathon time)
-      const secs = timeToSeconds(data.time);
-      if (secs < prSeconds) {
-        prSeconds = secs;
-        prTime = data.time;
-        prRace = data.race;
-      }
-
-      // Find most recent and earliest completed race
       if (data.date) {
         const parts = data.date.split('/');
         if (parts.length === 3) {
@@ -36,9 +23,6 @@ export function computeStats(dataMap) {
               mostRecentDate = d;
               mostRecentRace = data.race;
             }
-            if (!earliestDate || d < earliestDate) {
-              earliestDate = d;
-            }
           }
         }
       }
@@ -47,16 +31,14 @@ export function computeStats(dataMap) {
     }
   }
 
-  const yearsRacing = earliestDate
-    ? new Date().getFullYear() - earliestDate.getFullYear()
-    : 0;
+  const yearsRacing = new Date().getFullYear() - RACING_SINCE_YEAR;
 
   return {
     completedCount,
     plannedCount,
     totalGoal: 50,
-    prTime,
-    prRace,
+    prTime: OVERALL_PR.time,
+    prRace: OVERALL_PR.race,
     mostRecentRace,
     yearsRacing,
   };
