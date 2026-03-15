@@ -1,0 +1,64 @@
+// Google Sheets configuration
+export const SHEET_ID = '1VMQyVpuJfFeH51Wgy7fj29dPOsXRKWiTcjgZZyPK1vg';
+export const SHEET_GID = '1888629748';
+export const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${SHEET_GID}`;
+
+// Map data URL (pre-projected Albers)
+export const US_ATLAS_URL = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json';
+
+// Design tokens
+export const COLORS = {
+  completed: '#22c55e',
+  completedHover: '#4ade80',
+  planned: '#f59e0b',
+  plannedHover: '#fbbf24',
+  empty: '#334155',
+  emptyHover: '#475569',
+  border: '#475569',
+  accent: '#0ea5e9',
+};
+
+// Animation durations (ms)
+export const ANIM = {
+  stateTransition: 800,
+  counterDuration: 1500,
+  staggerDelay: 20,
+  overlayIn: 300,
+  overlayOut: 200,
+};
+
+// FIPS code → state abbreviation mapping
+export const FIPS_TO_ABBREV = {
+  '01': 'AL', '02': 'AK', '04': 'AZ', '05': 'AR', '06': 'CA',
+  '08': 'CO', '09': 'CT', '10': 'DE', '11': 'DC', '12': 'FL',
+  '13': 'GA', '15': 'HI', '16': 'ID', '17': 'IL', '18': 'IN',
+  '19': 'IA', '20': 'KS', '21': 'KY', '22': 'LA', '23': 'ME',
+  '24': 'MD', '25': 'MA', '26': 'MI', '27': 'MN', '28': 'MS',
+  '29': 'MO', '30': 'MT', '31': 'NE', '32': 'NV', '33': 'NH',
+  '34': 'NJ', '35': 'NM', '36': 'NY', '37': 'NC', '38': 'ND',
+  '39': 'OH', '40': 'OK', '41': 'OR', '42': 'PA', '44': 'RI',
+  '45': 'SC', '46': 'SD', '47': 'TN', '48': 'TX', '49': 'UT',
+  '50': 'VT', '51': 'VA', '53': 'WA', '54': 'WV', '55': 'WI',
+  '56': 'WY',
+};
+
+// State abbreviation → full name
+export const ABBREV_TO_NAME = {
+  AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California',
+  CO: 'Colorado', CT: 'Connecticut', DE: 'Delaware', DC: 'District of Columbia',
+  FL: 'Florida', GA: 'Georgia', HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois',
+  IN: 'Indiana', IA: 'Iowa', KS: 'Kansas', KY: 'Kentucky', LA: 'Louisiana',
+  ME: 'Maine', MD: 'Maryland', MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota',
+  MS: 'Mississippi', MO: 'Missouri', MT: 'Montana', NE: 'Nebraska', NV: 'Nevada',
+  NH: 'New Hampshire', NJ: 'New Jersey', NM: 'New Mexico', NY: 'New York',
+  NC: 'North Carolina', ND: 'North Dakota', OH: 'Ohio', OK: 'Oklahoma',
+  OR: 'Oregon', PA: 'Pennsylvania', RI: 'Rhode Island', SC: 'South Carolina',
+  SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah', VT: 'Vermont',
+  VA: 'Virginia', WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin',
+  WY: 'Wyoming',
+};
+
+// Reverse lookup: abbreviation → FIPS
+export const ABBREV_TO_FIPS = Object.fromEntries(
+  Object.entries(FIPS_TO_ABBREV).map(([fips, abbrev]) => [abbrev, fips])
+);
