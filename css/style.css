@@ -46,6 +46,7 @@ body {
 
 /* --- Layout --- */
 .app {
+  position: relative;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
@@ -460,22 +461,27 @@ body {
 
 /* --- Back Arrow --- */
 .back-arrow {
-  position: fixed;
+  position: absolute;
   top: 16px;
-  left: 16px;
+  left: 24px;
   z-index: 50;
-  color: var(--text-secondary);
-  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--text-tertiary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 50%;
   text-decoration: none;
-  line-height: 1;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
 .back-arrow:hover {
   color: var(--text-primary);
-  background: var(--bg-surface);
+  background: var(--bg-muted);
+  border-color: var(--text-tertiary);
 }
 
 /* --- Fade-in Animation --- */
