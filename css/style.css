@@ -458,6 +458,16 @@ body {
   border-top: 1px solid var(--border);
 }
 
+.back-link {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
 /* --- Fade-in Animation --- */
 .fade-in-section {
   opacity: 0;
