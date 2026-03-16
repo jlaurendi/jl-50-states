@@ -10,8 +10,8 @@ export const COLORS = {
   completedHover: '#4ade80',
   planned: '#f59e0b',
   plannedHover: '#fbbf24',
-  empty: '#334155',
-  emptyHover: '#475569',
+  empty: '#3b4f6b',
+  emptyHover: '#4b6080',
   border: '#475569',
   accent: '#0ea5e9',
 };

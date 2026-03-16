@@ -16,6 +16,7 @@ export async function initMap(container, { onClick } = {}) {
   const us = await response.json();
   const states = topojson.feature(us, us.objects.states);
   const borders = topojson.mesh(us, us.objects.states, (a, b) => a !== b);
+  const outline = topojson.mesh(us, us.objects.states, (a, b) => a === b);
 
   svg = d3.select(container)
     .append('svg')
@@ -37,7 +38,7 @@ export async function initMap(container, { onClick } = {}) {
     .attr('data-state', d => FIPS_TO_ABBREV[String(d.id).padStart(2, '0')] || '')
     .attr('class', 'state-path')
     .attr('fill', COLORS.empty)
-    .attr('stroke', '#94a3b8')
+    .attr('stroke', '#0f172a')
     .attr('stroke-width', 1.5)
     .attr('role', 'button')
     .attr('tabindex', '0')
@@ -56,17 +57,25 @@ export async function initMap(container, { onClick } = {}) {
   // Staggered fade-in animation
   if (!prefersReducedMotion) {
     statesGroup.selectAll('path')
-      .transition()
+      .transition('fade-in')
       .duration(600)
       .delay((d, i) => i * ANIM.staggerDelay)
       .style('opacity', 1);
   }
 
-  // State borders overlay
+  // State borders overlay (internal + external drawn on top of all fills)
   svg.append('path')
     .datum(borders)
     .attr('fill', 'none')
-    .attr('stroke', '#94a3b8')
+    .attr('stroke', '#0f172a')
+    .attr('stroke-width', 1.5)
+    .attr('stroke-linejoin', 'round')
+    .attr('pointer-events', 'none');
+
+  svg.append('path')
+    .datum(outline)
+    .attr('fill', 'none')
+    .attr('stroke', '#0f172a')
     .attr('stroke-width', 1.5)
     .attr('stroke-linejoin', 'round')
     .attr('pointer-events', 'none');
@@ -111,7 +120,7 @@ export function colorizeStates(dataMap) {
     if (prefersReducedMotion) {
       el.attr('fill', fill);
     } else {
-      el.transition()
+      el.transition('colorize')
         .duration(ANIM.stateTransition)
         .attr('fill', fill);
     }
