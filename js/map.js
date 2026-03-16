@@ -24,14 +24,6 @@ export async function initMap(container, { onClick } = {}) {
     .attr('role', 'img')
     .attr('aria-label', '50 States Marathon Progress Map');
 
-  // Glow filter for completed states
-  const defs = svg.append('defs');
-  const filter = defs.append('filter').attr('id', 'glow');
-  filter.append('feGaussianBlur').attr('stdDeviation', '3').attr('result', 'blur');
-  const merge = filter.append('feMerge');
-  merge.append('feMergeNode').attr('in', 'blur');
-  merge.append('feMergeNode').attr('in', 'SourceGraphic');
-
   statesGroup = svg.append('g').attr('class', 'states');
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -45,7 +37,7 @@ export async function initMap(container, { onClick } = {}) {
     .attr('data-state', d => FIPS_TO_ABBREV[String(d.id).padStart(2, '0')] || '')
     .attr('class', 'state-path')
     .attr('fill', COLORS.empty)
-    .attr('stroke', COLORS.border)
+    .attr('stroke', '#94a3b8')
     .attr('stroke-width', 1.5)
     .attr('role', 'button')
     .attr('tabindex', '0')
@@ -74,8 +66,8 @@ export async function initMap(container, { onClick } = {}) {
   svg.append('path')
     .datum(borders)
     .attr('fill', 'none')
-    .attr('stroke', COLORS.border)
-    .attr('stroke-width', 1)
+    .attr('stroke', '#94a3b8')
+    .attr('stroke-width', 1.5)
     .attr('stroke-linejoin', 'round')
     .attr('pointer-events', 'none');
 
@@ -103,13 +95,11 @@ export function colorizeStates(dataMap) {
 
     let fill = COLORS.empty;
     let statusLabel = 'not yet completed';
-    let useGlow = false;
 
     if (data) {
       if (data.status === 'completed') {
         fill = COLORS.completed;
         statusLabel = `completed — ${data.race}`;
-        useGlow = true;
       } else {
         fill = COLORS.planned;
         statusLabel = `planned — ${data.race}`;
@@ -117,10 +107,6 @@ export function colorizeStates(dataMap) {
     }
 
     el.attr('aria-label', `${ABBREV_TO_NAME[abbrev] || abbrev} — ${statusLabel}`);
-
-    if (useGlow) {
-      el.attr('filter', 'url(#glow)');
-    }
 
     if (prefersReducedMotion) {
       el.attr('fill', fill);
