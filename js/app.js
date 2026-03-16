@@ -1,4 +1,4 @@
-import { getStateData } from './sheets.js';
+import { fetchSheetData } from './sheets.js';
 import { initMap, colorizeStates } from './map.js';
 import { initOverlay, showOverlay } from './overlay.js';
 import { computeStats, renderStats } from './stats.js';
@@ -13,14 +13,27 @@ async function init() {
     onClick: (abbrev, data) => showOverlay(abbrev, data),
   });
 
-  // Load hard-coded data and wire everything up
-  const dataMap = getStateData();
-  colorizeStates(dataMap);
-  const stats = computeStats(dataMap);
-  renderStats(stats);
+  // Fetch data (live sheet with hard-coded fallback)
+  try {
+    const dataMap = await fetchSheetData();
+    colorizeStates(dataMap);
+    const stats = computeStats(dataMap);
+    renderStats(stats);
+  } catch (err) {
+    console.error('Failed to load data:', err);
+    showBanner('Unable to load race data.');
+  }
 
   // Fade in sections
   observeSections();
+}
+
+function showBanner(message) {
+  const banner = document.getElementById('error-banner');
+  if (banner) {
+    banner.textContent = message;
+    banner.hidden = false;
+  }
 }
 
 function observeSections() {

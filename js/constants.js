@@ -1,7 +1,5 @@
-// Google Sheets configuration
-export const SHEET_ID = '1VMQyVpuJfFeH51Wgy7fj29dPOsXRKWiTcjgZZyPK1vg';
-export const SHEET_GID = '1888629748';
-export const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${SHEET_GID}`;
+// Google Sheets published CSV URL
+export const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQb-GOelrdZSxhCshzzCFLoo9Ticukfj5o0FNNyxRkV742FTpaUHQtwvnet_mt5gDdqLKqoGJytR7Ib/pub?gid=351052097&single=true&output=csv';
 
 // Map data URL (pre-projected Albers)
 export const US_ATLAS_URL = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json';

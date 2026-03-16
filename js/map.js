@@ -1,5 +1,5 @@
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
-import * as topojson from 'https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/+esm';
+const d3 = window.d3;
+const topojson = window.topojson;
 import { US_ATLAS_URL, COLORS, ANIM, FIPS_TO_ABBREV, ABBREV_TO_NAME } from './constants.js';
 
 let svg, statesGroup, tooltip;
