@@ -22,6 +22,8 @@ async function init() {
   } catch (err) {
     console.error('Failed to load data:', err);
     showBanner('Unable to load race data.');
+    document.querySelectorAll('.progress-bar.loading, .meter-bar.loading')
+      .forEach(el => el.classList.remove('loading'));
   }
 
   // Fade in sections

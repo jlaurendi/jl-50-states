@@ -42,8 +42,28 @@
         <span class="counter-total"> / 50</span>
       </div>
       <p class="progress-label" id="progress-label">Loading…</p>
-      <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="50">
+      <div class="progress-bar loading" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="50">
         <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-meters">
+        <div class="meter">
+          <div class="meter-header">
+            <span class="meter-label">By area</span>
+            <span class="meter-value" id="meter-area-value">—</span>
+          </div>
+          <div class="meter-bar loading" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Percentage of U.S. land area completed">
+            <div class="meter-fill" id="meter-area-fill"></div>
+          </div>
+        </div>
+        <div class="meter">
+          <div class="meter-header">
+            <span class="meter-label">By population</span>
+            <span class="meter-value" id="meter-population-value">—</span>
+          </div>
+          <div class="meter-bar loading" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Percentage of U.S. population completed">
+            <div class="meter-fill" id="meter-population-fill"></div>
+          </div>
+        </div>
       </div>
     </section>
 
