@@ -1,4 +1,4 @@
-import { ANIM } from './constants.js';
+import { ANIM, STATE_AREA_SQMI, STATE_POPULATION } from './constants.js';
 import { timeToSeconds, OVERALL_PR, RACING_SINCE_YEAR } from './sheets.js';
 
 /**
@@ -9,10 +9,14 @@ export function computeStats(dataMap) {
   let plannedCount = 0;
   let mostRecentDate = null;
   let mostRecentRace = '';
+  let completedArea = 0;
+  let completedPopulation = 0;
 
   for (const [abbrev, data] of dataMap) {
     if (data.status === 'completed') {
       completedCount++;
+      completedArea += STATE_AREA_SQMI[abbrev] || 0;
+      completedPopulation += STATE_POPULATION[abbrev] || 0;
 
       if (data.date) {
         const parts = data.date.split('/');
@@ -33,10 +37,15 @@ export function computeStats(dataMap) {
 
   const yearsRacing = new Date().getFullYear() - RACING_SINCE_YEAR;
 
+  const totalArea = Object.values(STATE_AREA_SQMI).reduce((sum, v) => sum + v, 0);
+  const totalPopulation = Object.values(STATE_POPULATION).reduce((sum, v) => sum + v, 0);
+
   return {
     completedCount,
     plannedCount,
     totalGoal: 50,
+    areaPct: totalArea ? (completedArea / totalArea) * 100 : 0,
+    populationPct: totalPopulation ? (completedPopulation / totalPopulation) * 100 : 0,
     prTime: OVERALL_PR.time,
     prRace: OVERALL_PR.race,
     mostRecentRace,
@@ -64,6 +73,7 @@ export function renderStats(stats) {
   const progressFill = document.getElementById('progress-fill');
   if (progressFill) {
     const pct = (stats.completedCount / stats.totalGoal) * 100;
+    progressFill.closest('.progress-bar')?.classList.remove('loading');
     if (prefersReducedMotion) {
       progressFill.style.width = `${pct}%`;
     } else {
@@ -72,6 +82,10 @@ export function renderStats(stats) {
       });
     }
   }
+
+  // Area / population meters
+  renderMeter('meter-area', stats.areaPct, prefersReducedMotion);
+  renderMeter('meter-population', stats.populationPct, prefersReducedMotion);
 
   // Progress label
   const progressLabel = document.getElementById('progress-label');
@@ -95,6 +109,55 @@ export function renderStats(stats) {
 function setStatValue(id, value) {
   const el = document.getElementById(id);
   if (el) el.textContent = value;
+}
+
+/**
+ * Render a secondary meter (fill width + percentage value).
+ */
+function renderMeter(id, pct, prefersReducedMotion) {
+  const fill = document.getElementById(`${id}-fill`);
+  const value = document.getElementById(`${id}-value`);
+
+  const bar = fill ? fill.closest('.meter-bar') : null;
+  if (bar) {
+    bar.classList.remove('loading');
+    bar.setAttribute('aria-valuenow', pct.toFixed(1));
+  }
+
+  if (fill) {
+    if (prefersReducedMotion) {
+      fill.style.width = `${pct}%`;
+    } else {
+      requestAnimationFrame(() => {
+        fill.style.width = `${pct}%`;
+      });
+    }
+  }
+
+  if (value) {
+    if (prefersReducedMotion) {
+      value.textContent = `${pct.toFixed(1)}%`;
+    } else {
+      animatePercent(value, pct, ANIM.counterDuration);
+    }
+  }
+}
+
+/**
+ * Animate a percentage value from 0 to end (one decimal place).
+ */
+function animatePercent(el, end, duration) {
+  const startTime = performance.now();
+
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = `${(end * eased).toFixed(1)}%`;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+
+  requestAnimationFrame(update);
 }
 
 /**

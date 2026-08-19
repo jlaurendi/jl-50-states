@@ -122,25 +122,77 @@ body {
   position: relative;
 }
 
-.progress-fill::after {
+/* Loading state: gentle slate sweep across the empty track,
+   removed once data arrives */
+.progress-bar.loading::after,
+.meter-bar.loading::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: linear-gradient(
     90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    transparent 100%
+    transparent 20%,
+    rgba(148, 163, 184, 0.14) 50%,
+    transparent 80%
   );
-  animation: shimmer 2s ease-in-out infinite;
+  animation: loading-sweep 2.4s ease-in-out infinite;
 }
 
-@keyframes shimmer {
+@keyframes loading-sweep {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
+}
+
+/* --- Secondary Meters (area / population) --- */
+.progress-meters {
+  display: flex;
+  gap: 24px;
+  max-width: 500px;
+  margin: 20px auto 0;
+}
+
+.meter {
+  flex: 1;
+  min-width: 0;
+}
+
+.meter-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.meter-label {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.meter-value {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.meter-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-muted);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.meter-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--state-completed), #34d399);
+  border-radius: 4px;
+  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* --- Error Banner --- */
@@ -565,7 +617,8 @@ body {
     transition-duration: 0.01ms !important;
   }
 
-  .progress-fill::after {
+  .progress-bar.loading::after,
+  .meter-bar.loading::after {
     animation: none;
   }
 
